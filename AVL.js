@@ -332,12 +332,29 @@ let Node = function() {
 
 let tree = new Node();
 
-for (j=0; j < 16383; j++) {
-  let aux = (Math.random() * 10000);
-  tree = tree.insert(aux);
+//  creating values to be inserted and storing in file
+let set = new Set();
+for (j=0; set.size < 1332; j++) {
+  set.add(Math.random() * 10000);
+}
+let arr = Array.from(set);
+let data = {
+  arr
+};
+fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+
+//  reading from file
+let rawData = fs.readFileSync('data.json');
+let values = JSON.parse(rawData);
+
+// inserting in Tree
+
+for (j=0; j < values.arr.length; j++) {
+  tree = tree.insert(values.arr[j]);
 }
 
+//  geting info about tree and soring in file
 let levels = tree.nodesPerLevel();
 console.log(levels);
-let data = JSON.stringify(tree, null, 2);
+data = JSON.stringify(tree, null, 2);
 fs.writeFileSync('avlTree.json', data);
